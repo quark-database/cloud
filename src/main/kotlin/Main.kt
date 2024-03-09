@@ -1,5 +1,6 @@
 package quark
 
 fun main() {
-    println("Hello World!")
+    val cloud = QuarkCloud()
+    cloud.launch()
 }

@@ -24,13 +24,15 @@ kotlin {
 }
 
 tasks.withType<Jar> {
+    enabled = true
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn(configurations.compileClasspath)
+
     manifest {
-        attributes("Main-Class" to "quark.MainKt")
+        attributes["Main-Class"] = "quark.MainKt"
     }
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    from(sourceSets.main.get().output)
-    dependsOn(configurations.runtimeClasspath)
-    from({ configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }})
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
 }
